@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-B">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 My Awesome Fun Fund Rulebook! 🌟</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+    - Report Info: Rulebook Sections & Individual Rules. Goal: Easy comprehension and navigation of rules. Viz/Presentation: Thematic sections navigated by a top bar, with rules as expandable cards. Interaction: Click to expand/collapse rule details. Justification: Intuitive for structured documents, allows users to focus on specific areas. Library/Method: HTML/Tailwind for structure, Vanilla JS for expand/collapse and navigation.
+    - Report Info: Concept of Fun Fund contributions. Goal: Illustrate potential for fund growth. Viz/Presentation: Bar Chart (Chart.js). Interaction: Tooltips on hover. Justification: Visually engaging way to show example contribution values. Library/Method: Chart.js with responsive canvas container.
+    - CONFIRMING NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .rule-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .rule-card-content.open {
+            max-height: 1000px; /* Adjust as needed */
+            transition: max-height 0.7s ease-in;
+        }
+        /* Chart container styling for responsiveness */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width for readability on large screens */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px; /* Max height */
+        }
+        @media (min-width: 768px) { /* Medium screens and up */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .rule-card header:hover {
+            background-color: #fef3c7; /* amber-100 */
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-stone-800 antialiased">
+
+    <header class="bg-orange-500 text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between py-4">
+                <h1 class="text-2xl sm:text-3xl font-bold mb-2 sm:mb-0">🌟 Fun Fund Rulebook 🌟</h1>
+                <nav class="flex flex-wrap justify-center space-x-2 sm:space-x-4">
+                    <button onclick="scrollToSection('section-principles')" class="nav-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base">Core Principles</button>
+                    <button onclick="scrollToSection('section-fueling')" class="nav-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base">Fueling the Fun</button>
+                    <button onclick="scrollToSection('section-awesome')" class="nav-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base">Keeping it Real</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <p class="text-left text-lg text-stone-700 mb-8 mt-4">
+            Welcome to your interactive guide for the "Fun Fund" – a personal treasure chest 💰 designed to sprinkle your funemployment with delightful rewards, encourage awesome achievements, and make sure every bit of "you time" is extra special! Click on any rule to expand it.
+        </p>
+
+        <section id="section-principles" class="mb-12">
+            <h2 class="text-3xl font-bold text-orange-600 mb-6 border-b-2 border-orange-300 pb-2">📜 Section 1: The Core Principles</h2>
+            <p class="mb-6 text-stone-600">These are the foundational philosophies of your Fun Fund. They define what the fund is for and what it's not, ensuring it stays true to its joyful purpose.</p>
+            <div class="space-y-4">
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h3 class="text-xl font-semibold text-teal-700">1. ✨ The "Solo Joy" Mandate ✨</h3>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p class="mb-2"> This fund is dedicated *exclusively* to the pursuit of YOUR individual bliss, delight, and thrilling adventures! Think "treat yo' self to the max!" 🚀 </p>
+                        <p class="mb-2"> It's not for joint holidays or shared household goodies. This is about your unique fun, your spontaneous whims, and your personal celebrations. </p>
+                        <div class="mt-3 p-3 bg-teal-50 rounded-lg border border-teal-200">
+                            <h4 class="font-semibold text-teal-600">Quirk Alert! 🚦</h4>
+                            <p class="text-sm text-teal-700">The "Plus One... for Me!" Loophole: Once in a blue 🌙 (or after a TRULY monumental achievement), you can use a *small, predefined* portion of the fund for an experience where someone might tag along, but ONLY if the primary beneficiary and ultimate joy-receiver is unequivocally YOU (e.g., you're dying to see a niche film, and a friend joins, but it's *your* cinematic quest).</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h3 class="text-xl font-semibold text-teal-700">2. 🧐 The "Purely Fun, Not Functional" Filter 🧐</h3>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p class="mb-2">This fund is for the extras, the whimsies, the "just because it makes me happy" things!</p>
+                        <ul class="list-disc list-inside space-y-1 pl-2 text-stone-700">
+                            <li><strong>2a. The "Life Essentials" Exemption:</strong> If an expense would likely happen anyway for daily life (e.g., a regular meal you'd have eaten at home, even if you're on a solo outing 🥪), it's a "Life Expense," not a Fun Fund withdrawal.</li>
+                            <li><strong>2b. The "Shared Glow-Up" Clause:</strong> Beauty 💅 and basic fitness items/services (like haircuts 💇‍♀️, brow threading, your regular gym membership that keeps you feeling fab) are considered investments in the "Hot Partner Ecosystem" 😉 – everyone benefits, so these come from the general budget, not the sacred Fun Fund.</li>
+                            <li><strong>2c. The "Solo Serenity" Special: MASSAGES!</strong> Ah, yes! Massages 💆‍♀️ and other solo therapeutic treats that bring *you* singular serenity and knead away *your* stress are PRIME Fun Fund candidates. If it's all about your personal bliss and rejuvenation, it's IN!</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h3 class="text-xl font-semibold text-teal-700">3. 💖 The "Kindness Kickback" Clause 💖</h3>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p>While this fund is primarily for *your* awesome solo adventures, occasionally, a spontaneous act of generosity is in order! You can choose to 'kickback' a small, symbolic amount from your Fun Fund to another person's Fun Fund (or equivalent) as a special thank you 🙏, a "thinking of you," or to celebrate one of *their* small wins. This should be rare, heartfelt, and a delightful surprise sparkle! ✨ Think of it as Fun Fund karma – good vibes out, good vibes in!</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="section-fueling" class="mb-12">
+            <h2 class="text-3xl font-bold text-orange-600 mb-6 border-b-2 border-orange-300 pb-2">📈 Section 2: Fueling the Fun - How to Grow Your Stash!</h2>
+            <p class="mb-6 text-stone-600">This is where the magic happens! Discover all the creative and rewarding ways you can contribute to your Fun Fund, turning everyday actions and achievements into future joy.</p>
+            <div class="space-y-4">
+                <h3 class="text-2xl font-semibold text-teal-700 mt-6 mb-3">4. 🚀 The "Earn Your Fun" Engine 🚀</h3>
+                <p class="mb-4 text-stone-600">Contributions should be a fun challenge, celebrating big wins and small victories alike!</p>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden ml-0 md:ml-4">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h4 class="text-lg font-semibold text-teal-700">🧹🍔 DIY Delights (Acts of Service)</h4>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p class="mb-2">Channel your inner domestic superstar! For every task you conquer that you might normally pay for (think gourmet meal instead of takeout 🥡, a sparkling clean house ✨, a gleaming car wash 🚗), deposit the "Fair Market Value" (what you'd *actually* have paid) into the Fund. Keep a "Service-to-Savings" log!</p>
+                        <div class="mt-3 p-3 bg-teal-50 rounded-lg border border-teal-200">
+                            <h5 class="font-semibold text-teal-600">Quirk Alert! 🚦</h5>
+                            <p class="text-sm text-teal-700">The "Grit & Grind" Bonus: For tasks you *especially* detest but tackle anyway (hello, oven cleaning! 🧤), add a 15-25% "Ugh, I Did It!" bonus to your contribution.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden ml-0 md:ml-4">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h4 class="text-lg font-semibold text-teal-700">💪🧠🧘‍♀️ Personal Growth Gains (Achievements)</h4>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p class="mb-2">Level up your life, level up your fund! Set SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound) and assign a "Fun Fund Value" to each upon glorious completion.</p>
+                        <p class="font-medium text-stone-700 mt-2">Examples:</p>
+                        <ul class="list-disc list-inside space-y-1 pl-2 text-stone-700">
+                            <li>🧗‍♀️ Climbing a specific grade: $[X]</li>
+                            <li>🚴‍♀️ Riding that century: $[Y]</li>
+                            <li>📚 Reading [X] books in a month: $[Z]</li>
+                            <li>🗓️ No alcohol for a week: $[A] (Go for a month? Bigger bonus! 🌟)</li>
+                        </ul>
+                        <div class="mt-3 p-3 bg-teal-50 rounded-lg border border-teal-200">
+                            <h5 class="font-semibold text-teal-600">Quirk Alert! 🚦</h5>
+                            <p class="text-sm text-teal-700">The "Streak Stacker" Extra: Nail a goal consecutively? The *second* time gets a 10% bonus contribution, the third 15%, and so on (maybe cap it at 25% to keep it spicy!).</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden ml-0 md:ml-4">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h4 class="text-lg font-semibold text-teal-700">🏆🚴‍♀️ Epic Feats Unlock Epic Gear! (Major Milestones)</h4>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p>For those HUGE, game-changing achievements (like hitting that W/Kg of 3.0 goal! 🎉), the reward isn't just cash for the fund, it's a pre-determined, coveted *item*! In this case, conquering that 3.0 W/Kg means: Hello, new bike computer! 🤩 The item *is* the trophy! Other epic feats can have their own pre-decided gear rewards. Define these "Epic Gear Unlocks" as you set your major goals!</p>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden ml-0 md:ml-4">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h4 class="text-lg font-semibold text-teal-700">💰🧐 Savings Savvy (Frugal Finds)</h4>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                         <p class="mb-2">Your smarts save you cash, and now they boost your fun!</p>
+                        <p class="font-medium text-stone-700 mt-2">Examples:</p>
+                        <ul class="list-disc list-inside space-y-1 pl-2 text-stone-700">
+                            <li>⛽ Costco Gas Run: Calculate the savings vs. your usual spot. Transfer 50-75% of that sweet relief to the fund.</li>
+                            <li>✂️ Membership Minimizer: Cancel or downgrade a subscription? First 3 months’ savings (or a set % of annual) goes straight to fun!</li>
+                        </ul>
+                        <div class="mt-3 p-3 bg-teal-50 rounded-lg border border-teal-200">
+                            <h5 class="font-semibold text-teal-600">Quirk Alert! 🚦</h5>
+                            <p class="text-sm text-teal-700">The "Negotiation Ninja" Spoils: Successfully talked down a bill? 🥋 A flat bonus (e.g., $10) or 25% of the first month's saving gets kicked into the Fun Fund.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden ml-0 md:ml-4">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h4 class="text-lg font-semibold text-teal-700">♻️💸 Declutter Dollars (Cash from Clutter)</h4>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p class="mb-2">Turn those forgotten items into future fun! 100% of the moolah 🤑 from selling unused/less-used things around the house goes directly into the Fun Fund. Marie Kondo would be thrilled!</p>
+                        <div class="mt-3 p-3 bg-teal-50 rounded-lg border border-teal-200">
+                            <h5 class="font-semibold text-teal-600">Quirk Alert! 🚦</h5>
+                            <p class="text-sm text-teal-700">The "Big Flip Fee": Sell something substantial (e.g., furniture over $100)? Pay yourself a 5-10% "Brokerage Fee" to your regular account for the effort. The rest makes your Fun Fund sing! 🎶</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden ml-0 md:ml-4">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h4 class="text-lg font-semibold text-teal-700">💼📈 Contracting Cash (Gig Gains)</h4>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p class="mb-2">Making money with your awesome skills? Sweet! You decide the ratio that feels right for transferring a portion to your Fun Fund.</p>
+                        <p class="mb-2 text-stone-700"><em>Consider:</em> Is it passion-project fun (higher % to Fun Fund) or more of a grind (smaller %)? Aim for something like 20-50% to start, and adjust as you go.</p>
+                        <div class="mt-3 p-3 bg-teal-50 rounded-lg border border-teal-200">
+                            <h5 class="font-semibold text-teal-600">Quirk Alert! 🚦</h5>
+                            <p class="text-sm text-teal-700">The "Dream Gig" Dividend: Land a contract gig that *perfectly* aligns with a passion or a skill you're jazzed to develop? 🙌 Allocate an extra 10-15% to the Fun Fund as a high-five to yourself!</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="mt-10 bg-white p-4 sm:p-6 rounded-xl shadow-lg">
+                <h3 class="text-2xl font-bold text-orange-600 mb-4 text-center">Fun Fund Growth Potential! 💰</h3>
+                <p class="text-center text-stone-600 mb-6">See how different activities could contribute to your Fun Fund! (Example values)</p>
+                <div class="chart-container">
+                    <canvas id="funFundChart"></canvas>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="section-awesome" class="mb-12">
+            <h2 class="text-3xl font-bold text-orange-600 mb-6 border-b-2 border-orange-300 pb-2">🌟 Section 3: Keeping it Real & Awesome</h2>
+            <p class="mb-6 text-stone-600">These final rules help maintain the spirit of the Fun Fund, ensuring it remains a source of joy, motivation, and guilt-free pleasure.</p>
+            <div class="space-y-4">
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h3 class="text-xl font-semibold text-teal-700">5. 💪😅 The "Challenge Chest" (Voluntary Hardship, Fun Gain)</h3>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p class="mb-2">Embrace a little discomfort for future delight! Set specific, time-bound personal challenges. No penalty for trying and not quite making it, but sweet Fun Fund rewards for success!</p>
+                        <p class="font-medium text-stone-700 mt-2">Examples:</p>
+                        <ul class="list-disc list-inside space-y-1 pl-2 text-stone-700">
+                            <li>🚫 "No Take-Out" for a week: Contribute the estimated savings.</li>
+                            <li>📱 "Digital Detox Day" (for real!): $[X] contribution.</li>
+                            <li>☕ "DIY Coffee Captain" (all home-brewed for X weeks): Contribute the café savings.</li>
+                        </ul>
+                        <div class="mt-3 p-3 bg-teal-50 rounded-lg border border-teal-200">
+                            <h5 class="font-semibold text-teal-600">Quirk Alert! 🚦</h5>
+                            <p class="text-sm text-teal-700">The "Daredevil Deposit": If a friend positively dares you to achieve a cool personal goal, and you CRUSH IT, you get to make your standard contribution, plus a tiny "Bragging Rights Bonus" of $5.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h3 class="text-xl font-semibold text-teal-700">6. 🧐💖 The "Fun Fund Audit & Appreciation" Ritual 💖🧐</h3>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p>Once a month (or quarter), take a peek at your Fun Fund. See how it grew, remember the awesome things you did to build it, and appreciate the joyful experiences it has unlocked or will unlock. This is your moment of financial self-care and celebration! 🎉</p>
+                    </div>
+                </article>
+
+                <article class="rule-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <header class="p-4 sm:p-5 cursor-pointer bg-amber-100 flex justify-between items-center" onclick="toggleRule(this)">
+                        <h3 class="text-xl font-semibold text-teal-700">7. 🎉🥳 The "No Guilt" Guarantee! 🥳🎉</h3>
+                        <span class="text-2xl text-orange-500 transform transition-transform duration-300">&#x25BC;</span>
+                    </header>
+                    <div class="rule-card-content p-4 sm:p-5 border-t border-amber-200">
+                        <p>This is the GOLDEN RULE! Money spent from the Fun Fund is to be enjoyed 1000% GUILT-FREE. You earned it, you deserved it, now go revel in that joy!</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-amber-100 text-center p-6 mt-12">
+        <p>&copy; Your Awesome Fun Fund Rulebook. Keep having fun!</p>
+    </footer>
+
+    <script>
+        function toggleRule(headerElement) {
+            const content = headerElement.nextElementSibling;
+            const arrow = headerElement.querySelector('span');
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                // Close other open cards in the same section first for accordion effect
+                // const parentSection = headerElement.closest('section');
+                // if (parentSection) {
+                //     parentSection.querySelectorAll('.rule-card-content.open').forEach(openContent => {
+                //         if (openContent !== content) {
+                //             openContent.classList.remove('open');
+                //             openContent.previousElementSibling.querySelector('span').style.transform = 'rotate(0deg)';
+                //         }
+                //     });
+                // }
+                // Commented out accordion effect for now, as some users prefer multiple open.
+                content.classList.add('open');
+                arrow.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Chart.js Fun Fund Example
+        const ctx = document.getElementById('funFundChart').getContext('2d');
+        const funFundChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['DIY Delights', 'Growth Gains', 'Savings Savvy', 'Declutter $', 'Contracting Cash'],
+                datasets: [{
+                    label: 'Example Monthly Contribution ($)',
+                    data: [45, 60, 25, 75, 150], // Example data
+                    backgroundColor: [
+                        'rgba(251, 191, 36, 0.6)', // amber-400
+                        'rgba(249, 115, 22, 0.6)', // orange-500
+                        'rgba(20, 184, 166, 0.6)', // teal-500
+                        'rgba(234, 179, 8, 0.6)',  // yellow-500
+                        'rgba(245, 158, 11, 0.6)'  // amber-500
+                    ],
+                    borderColor: [
+                        'rgba(251, 191, 36, 1)',
+                        'rgba(249, 115, 22, 1)',
+                        'rgba(20, 184, 166, 1)',
+                        'rgba(234, 179, 8, 1)',
+                        'rgba(245, 158, 11, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                             maxRotation: 45,
+                             minRotation: 0,
+                             autoSkip: false,
+                             callback: function(value, index, values) {
+                                const label = this.getLabelForValue(value);
+                                if (label.length > 16) {
+                                    return label.substring(0, 15) + '...';
+                                }
+                                return label;
+                             }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hiding legend as it's a single dataset
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
